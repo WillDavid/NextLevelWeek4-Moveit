@@ -20,6 +20,7 @@ interface ChallengesContextData {
     activeChallenge: Challenge;
     experienceToNextLevel: number;
     completedChallenge: () => void;
+    closeLevelUpModal: () => void;
 
 }
 
@@ -42,6 +43,7 @@ export function ChallengesProvider({children,
     const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted ?? 0)
 
     const [activeChallenge, setActiveChallenge] = useState(null)
+    const [isLevelUpModalOpen, setIsLevelUpModalOpen] =useState(false)
 
 
 
@@ -64,8 +66,13 @@ export function ChallengesProvider({children,
   
     function levelUp(){
     setLevel(level + 1);
+    setIsLevelUpModalOpen(true)
 
     
+  }
+
+  function closeLevelUpModal(){
+      setIsLevelUpModalOpen(false)
   }
 
   function startNewChallenge(){
@@ -120,11 +127,12 @@ export function ChallengesProvider({children,
             activeChallenge,
             resetChallenge,
             experienceToNextLevel,
-            completedChallenge
+            completedChallenge,
+            closeLevelUpModal
             }}>
             {children}
 
-            <LevelUpModal></LevelUpModal>
+            {isLevelUpModalOpen && <LevelUpModal></LevelUpModal>}
         </ChallengesContext.Provider>
     )
 }
